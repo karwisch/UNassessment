@@ -1,0 +1,1995 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Untangling Journey Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #1B7F92;
+            --mauve: #b36278;
+            --light-teal: #2a9fb5;
+            --light-mauve: #c47a95;
+            --cream: #f8f6f3;
+            --charcoal: #2a2a2a;
+            --warm-white: #fefdfb;
+
+            /* Threshold colors */
+            --tangled: #d32f2f;
+            --hopeful: #f57c00;
+            --untangling: #fbc02d;
+            --agency: #b36278;
+            --balance: #a4789c;
+            --skillsets: #1B7F92;
+            --leveling: #2c5282;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--warm-white);
+            color: var(--charcoal);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           NAVBAR
+           ======================================== */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .nav-brand {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .nav-logo {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-brand a:hover .nav-logo {
+            opacity: 0.8;
+        }
+
+        .nav-brand a {
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .nav-container {
+                padding: 12px 15px;
+            }
+
+            .nav-logo {
+                max-width: 120px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 0.8em;
+            }
+        }
+
+        /* ========================================
+           MAIN EXPLORER CONTAINER
+           ======================================== */
+        .explorer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px);
+            max-height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        /* ========================================
+           HEADER - Title + Persona Filters
+           ======================================== */
+        .explorer-header {
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        .explorer-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .explorer-description {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.875rem;
+            color: #666;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 1.25rem auto;
+            line-height: 1.6;
+        }
+
+        /* Persona Filter Pills */
+        .persona-filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .persona-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            background: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--charcoal);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .persona-pill:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        .persona-pill.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white;
+        }
+
+        .persona-pill .icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========================================
+           SPECTRUM BAR - With circles and triangles
+           ======================================== */
+        .spectrum-bar {
+            flex-shrink: 0;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .spectrum-wrapper {
+            position: relative;
+            padding: 2rem 0 2.5rem 0;
+        }
+
+        .spectrum-track {
+            position: relative;
+            height: 8px;
+            background: linear-gradient(
+                90deg,
+                var(--tangled) 0%, var(--tangled) 14%,
+                var(--hopeful) 14%, var(--hopeful) 28%,
+                var(--untangling) 28%, var(--untangling) 42%,
+                var(--agency) 42%, var(--agency) 56%,
+                var(--balance) 56%, var(--balance) 70%,
+                var(--skillsets) 70%, var(--skillsets) 85%,
+                var(--leveling) 85%, var(--leveling) 100%
+            );
+            border-radius: 4px;
+        }
+
+        /* Circles on the spectrum track */
+        .spectrum-marker {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .spectrum-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .spectrum-marker.active {
+            transform: translate(-50%, -50%) scale(1.3);
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1.3);
+                box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                box-shadow: 0 0 0 8px rgba(255,255,255,0.3), 0 3px 15px rgba(0,0,0,0.4);
+            }
+        }
+
+        .spectrum-marker.tangled { left: 7%; background: var(--tangled); }
+        .spectrum-marker.hopeful { left: 21%; background: var(--hopeful); }
+        .spectrum-marker.untangling { left: 35%; background: var(--untangling); }
+        .spectrum-marker.agency { left: 49%; background: var(--agency); }
+        .spectrum-marker.balance { left: 63%; background: var(--balance); }
+        .spectrum-marker.skillsets { left: 77.5%; background: var(--skillsets); }
+        .spectrum-marker.leveling { left: 92.5%; background: var(--leveling); }
+
+        /* Labels with triangles */
+        .spectrum-label {
+            position: absolute;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border: 2px solid;
+            background: var(--warm-white);
+            z-index: 1;
+        }
+
+        .spectrum-label:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .spectrum-label.active {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Triangle pointers */
+        .spectrum-label::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+        }
+
+        /* Labels above track */
+        .spectrum-label.above {
+            bottom: 18px;
+        }
+        .spectrum-label.above::after {
+            top: 100%;
+            border-top: 8px solid;
+            border-top-color: inherit;
+        }
+
+        /* Labels below track */
+        .spectrum-label.below {
+            top: 18px;
+        }
+        .spectrum-label.below::after {
+            bottom: 100%;
+            border-bottom: 8px solid;
+            border-bottom-color: inherit;
+        }
+
+        /* Individual label colors and positions */
+        .spectrum-label.tangled {
+            left: 7%;
+            color: var(--tangled);
+            border-color: var(--tangled);
+            background: linear-gradient(135deg, #ffebee, var(--warm-white));
+        }
+        .spectrum-label.tangled::after { border-bottom-color: var(--tangled); }
+
+        .spectrum-label.hopeful {
+            left: 21%;
+            color: var(--hopeful);
+            border-color: var(--hopeful);
+            background: linear-gradient(135deg, #fff3e0, var(--warm-white));
+        }
+        .spectrum-label.hopeful::after { border-top-color: var(--hopeful); }
+
+        .spectrum-label.untangling {
+            left: 35%;
+            color: #e65100;
+            border-color: var(--untangling);
+            background: linear-gradient(135deg, #fff8e1, var(--warm-white));
+        }
+        .spectrum-label.untangling::after { border-bottom-color: var(--untangling); }
+
+        .spectrum-label.agency {
+            left: 49%;
+            color: var(--agency);
+            border-color: var(--agency);
+            background: linear-gradient(135deg, rgba(179,98,120,0.1), var(--warm-white));
+        }
+        .spectrum-label.agency::after { border-top-color: var(--agency); }
+
+        .spectrum-label.balance {
+            left: 63%;
+            color: var(--balance);
+            border-color: var(--balance);
+            background: linear-gradient(135deg, rgba(164,120,156,0.1), var(--warm-white));
+        }
+        .spectrum-label.balance::after { border-bottom-color: var(--balance); }
+
+        .spectrum-label.skillsets {
+            left: 77.5%;
+            color: var(--skillsets);
+            border-color: var(--skillsets);
+            background: linear-gradient(135deg, rgba(27,127,146,0.1), var(--warm-white));
+        }
+        .spectrum-label.skillsets::after { border-top-color: var(--skillsets); }
+
+        .spectrum-label.leveling {
+            left: 92.5%;
+            color: var(--leveling);
+            border-color: var(--leveling);
+            background: linear-gradient(135deg, rgba(44,82,130,0.1), var(--warm-white));
+        }
+        .spectrum-label.leveling::after { border-bottom-color: var(--leveling); }
+
+        /* ========================================
+           ACCORDION PANELS - Main content area
+           ======================================== */
+        .accordion-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0.5rem;
+        }
+
+        /* Custom scrollbar */
+        .accordion-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .accordion-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .accordion-container::-webkit-scrollbar-thumb {
+            background: var(--teal);
+            border-radius: 3px;
+        }
+
+        .accordion-panel {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .accordion-panel.tangled { border-left-color: var(--tangled); }
+        .accordion-panel.hopeful { border-left-color: var(--hopeful); }
+        .accordion-panel.untangling { border-left-color: var(--untangling); }
+        .accordion-panel.agency { border-left-color: var(--agency); }
+        .accordion-panel.balance { border-left-color: var(--balance); }
+        .accordion-panel.skillsets { border-left-color: var(--skillsets); }
+        .accordion-panel.leveling { border-left-color: var(--leveling); }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background: rgba(0,0,0,0.02);
+        }
+
+        .accordion-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .threshold-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .threshold-dot.tangled { background: var(--tangled); }
+        .threshold-dot.hopeful { background: var(--hopeful); }
+        .threshold-dot.untangling { background: var(--untangling); }
+        .threshold-dot.agency { background: var(--agency); }
+        .threshold-dot.balance { background: var(--balance); }
+        .threshold-dot.skillsets { background: var(--skillsets); }
+        .threshold-dot.leveling { background: var(--leveling); }
+
+        .accordion-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .accordion-subtitle {
+            font-size: 0.8rem;
+            color: #666;
+            margin-left: 0.5rem;
+            font-style: italic;
+        }
+
+        .accordion-toggle {
+            font-size: 0.8rem;
+            color: #999;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-panel.open .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Accordion Body */
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-panel.open .accordion-body {
+            max-height: 800px;
+        }
+
+        .accordion-content {
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        /* Threshold Sections (Situation, Narrative, Shift) */
+        .threshold-sections {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .threshold-section {
+            background: var(--cream);
+            padding: 0.85rem;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-text {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--charcoal);
+        }
+
+        /* Experience Cards */
+        .experience-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .experience-card {
+            background: var(--cream);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .experience-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .experience-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 0.3rem;
+        }
+
+        .experience-desc {
+            font-size: 0.7rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* General View (non-persona) */
+        .general-experiences-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 0.75rem;
+        }
+
+        /* CTA */
+        .explorer-cta {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 1rem 0;
+            background: linear-gradient(to top, var(--warm-white), transparent);
+        }
+
+        .cta-text {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--teal);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--light-teal);
+            transform: translateY(-2px);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 900px) {
+            .threshold-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .spectrum-bar {
+                padding: 1rem;
+            }
+
+            .spectrum-wrapper {
+                padding: 2rem 0;
+            }
+
+            .spectrum-label {
+                font-size: 0.55rem;
+                padding: 0.25rem 0.35rem;
+            }
+
+            .spectrum-marker {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .explorer {
+                padding: 1rem;
+            }
+
+            .explorer-title {
+                font-size: 1.2rem;
+            }
+
+            .persona-filters {
+                gap: 0.3rem;
+            }
+
+            .persona-pill {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.75rem;
+            }
+
+            .spectrum-label {
+                display: none;
+            }
+
+            .spectrum-wrapper {
+                padding: 0.5rem 0;
+            }
+
+            .spectrum-marker {
+                width: 20px;
+                height: 20px;
+                font-size: 0.6rem;
+            }
+
+            .experience-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .accordion-subtitle {
+                display: none;
+            }
+        }
+
+        /* ========================================
+           ONBOARDING OVERLAY
+           ======================================== */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .onboarding-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .onboarding-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .onboarding-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .onboarding-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-number.persona,
+        .step-number.spectrum,
+        .step-number.content {
+            background: #6caa64;
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--charcoal);
+            margin-bottom: 0.3rem;
+        }
+
+        .step-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .step-visual {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .mini-pill {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .mini-pill.example {
+            background: var(--teal);
+            color: white;
+        }
+
+        .mini-pill.inactive {
+            background: #e1e5e9;
+            color: #666;
+        }
+
+        .mini-spectrum {
+            height: 6px;
+            width: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--tangled), var(--hopeful), var(--untangling), var(--agency), var(--balance), var(--skillsets), var(--leveling));
+            margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .mini-marker {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: var(--agency);
+            border: 2px solid white;
+            border-radius: 50%;
+            left: 50%;
+            animation: mini-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes mini-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        .onboarding-footer {
+            text-align: center;
+        }
+
+        .onboarding-btn {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .onboarding-btn:hover {
+            background: var(--light-teal);
+            transform: translateY(-2px);
+        }
+
+        .onboarding-skip {
+            display: block;
+            margin-top: 0.75rem;
+            color: #999;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .onboarding-skip:hover {
+            color: var(--charcoal);
+        }
+
+        /* ========================================
+           STEP INDICATORS (beside UI sections)
+           ======================================== */
+        .section-with-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .section-with-step.center-aligned {
+            align-items: center;
+        }
+
+        .inline-step-indicator {
+            flex-shrink: 0;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: white;
+            cursor: help;
+            position: relative;
+            white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .inline-step-indicator:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+        }
+
+        .inline-step-indicator.step-1,
+        .inline-step-indicator.step-2,
+        .inline-step-indicator.step-3 {
+            background: #6caa64;
+        }
+
+        /* Tooltip styles */
+        .step-tooltip {
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            width: 280px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border: 1px solid #e1e5e9;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 9999;
+            pointer-events: none;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .step-tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 8px solid transparent;
+            border-right-color: white;
+        }
+
+        .inline-step-indicator:hover .step-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .step-tooltip-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-tooltip-desc {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .section-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Hide step indicators on mobile */
+        @media (max-width: 768px) {
+            .inline-step-indicator {
+                display: none;
+            }
+
+            .section-with-step {
+                display: block;
+            }
+        }
+
+        /* ========================================
+           SINGLE THRESHOLD DISPLAY (Desktop)
+           ======================================== */
+        .single-threshold-display {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .single-threshold-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--cream);
+        }
+
+        .single-threshold-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .single-threshold-dot.tangled { background: var(--tangled); }
+        .single-threshold-dot.hopeful { background: var(--hopeful); }
+        .single-threshold-dot.untangling { background: var(--untangling); }
+        .single-threshold-dot.agency { background: var(--agency); }
+        .single-threshold-dot.balance { background: var(--balance); }
+        .single-threshold-dot.skillsets { background: var(--skillsets); }
+        .single-threshold-dot.leveling { background: var(--leveling); }
+
+        .single-threshold-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+
+        .single-threshold-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-left: 0.75rem;
+        }
+
+        /* Desktop single view, mobile accordion */
+        @media (min-width: 769px) {
+            .accordion-container.desktop-single-mode {
+                display: none;
+            }
+
+            .single-threshold-display {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .single-threshold-display {
+                display: none;
+            }
+
+            .accordion-container.desktop-single-mode {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="https://www.untanglednarrative.com">
+                    <img src="https://www.untanglednarrative.com/wp-content/uploads/2025/12/cropped-untangled-narrative-2026-logo-horizontal.png" alt="Untangled Narrative, LLC" class="nav-logo">
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="https://www.untanglednarrative.com/explorer-v2.html">Explorer</a>
+                <a href="https://www.untanglednarrative.com/#testimonials">Testimonials</a>
+                <a href="https://www.untanglednarrative.com/#about">About</a>
+                <a href="https://www.untanglednarrative.com/#contact">Contact</a>
+                <a href="https://www.untanglednarrative.com/blog/">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Onboarding Overlay -->
+    <div class="onboarding-overlay" id="onboarding">
+        <div class="onboarding-card">
+            <h2 class="onboarding-title">How to Use This Explorer</h2>
+
+            <div class="onboarding-steps">
+                <div class="onboarding-step">
+                    <div class="step-number persona">A</div>
+                    <div class="step-content">
+                        <div class="step-title">Choose Your Perspective</div>
+                        <div class="step-description">
+                            Select a persona to see journey stages through different lenses. Each perspective shows unique situations, narratives, and shifts.
+                        </div>
+                        <div class="step-visual">
+                            <span class="mini-pill example">General</span>
+                            <span class="mini-pill inactive">Executive</span>
+                            <span class="mini-pill inactive">Creative</span>
+                            <span class="mini-pill inactive">Entrepreneur</span>
+                            <span class="mini-pill inactive">Team</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="onboarding-step">
+                    <div class="step-number spectrum">B</div>
+                    <div class="step-content">
+                        <div class="step-title">Click Any Threshold</div>
+                        <div class="step-description">
+                            The spectrum shows 7 stages from Tangled to Leveling Up. Click any circle or label to jump to that stage. The pulsing marker shows where you are.
+                        </div>
+                        <div class="mini-spectrum">
+                            <div class="mini-marker"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="onboarding-step">
+                    <div class="step-number content">C</div>
+                    <div class="step-content">
+                        <div class="step-title">Explore the Details</div>
+                        <div class="step-description">
+                            Content changes based on your persona + threshold combination. <strong>General</strong> shows common experiences. <strong>Specific personas</strong> reveal the Situation, Narrative Dynamics, and Shift for that journey stage.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="onboarding-footer">
+                <button class="onboarding-btn" id="onboarding-start">Start Exploring</button>
+                <button class="onboarding-skip" id="onboarding-skip">Don't show this again</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="explorer">
+        <!-- Header with Title + Persona Filters -->
+        <div class="explorer-header">
+            <h1 class="explorer-title">The Untangling Journey Explorer</h1>
+            <p class="explorer-description">Change rarely moves in a straight line. This tool maps seven thresholds in the untangling journey, showing how each stage feels and what shifts become possible — whether you're leading, creating, building, or working as a team.</p>
+            <div class="section-with-step center-aligned">
+                <div class="inline-step-indicator step-1">
+                    Step A
+                    <div class="step-tooltip">
+                        <div class="step-tooltip-title">Choose Your Perspective</div>
+                        <div class="step-tooltip-desc">Select a persona to see journey stages through different lenses. Each perspective shows unique situations, narratives, and shifts.</div>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="persona-filters">
+                        <button class="persona-pill active" data-persona="general">
+                            <span class="icon">&#9679;</span>
+                            <span>General</span>
+                        </button>
+                        <button class="persona-pill" data-persona="executive">
+                            <span class="icon">&#9956;</span>
+                            <span>Executive</span>
+                        </button>
+                        <button class="persona-pill" data-persona="creative">
+                            <span class="icon">&#9998;</span>
+                            <span>Creative</span>
+                        </button>
+                        <button class="persona-pill" data-persona="entrepreneur">
+                            <span class="icon">&#127793;</span>
+                            <span>Entrepreneur</span>
+                        </button>
+                        <button class="persona-pill" data-persona="team">
+                            <span class="icon">&#128101;</span>
+                            <span>Team</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spectrum Bar with Circles and Triangles -->
+        <div class="section-with-step center-aligned">
+            <div class="inline-step-indicator step-2">
+                Step B
+                <div class="step-tooltip">
+                    <div class="step-tooltip-title">Click Any Threshold</div>
+                    <div class="step-tooltip-desc">The spectrum shows 7 stages from Tangled to Leveling Up. Click any circle or label to jump to that stage. The pulsing marker shows where you are.</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="spectrum-bar">
+                    <div class="spectrum-wrapper">
+                        <!-- The gradient track with circle markers and labels -->
+                        <div class="spectrum-track">
+                            <!-- Circle markers with numbers -->
+                            <div class="spectrum-marker tangled" data-threshold="tangled">1</div>
+                            <div class="spectrum-marker hopeful" data-threshold="hopeful">2</div>
+                            <div class="spectrum-marker untangling" data-threshold="untangling">3</div>
+                            <div class="spectrum-marker agency" data-threshold="agency">4</div>
+                            <div class="spectrum-marker balance" data-threshold="balance">5</div>
+                            <div class="spectrum-marker skillsets" data-threshold="skillsets">6</div>
+                            <div class="spectrum-marker leveling" data-threshold="leveling">7</div>
+
+                            <!-- Labels above the track -->
+                            <div class="spectrum-label hopeful above" data-threshold="hopeful">Hopeful</div>
+                            <div class="spectrum-label agency above" data-threshold="agency">Agency</div>
+                            <div class="spectrum-label skillsets above" data-threshold="skillsets">Skill-sets</div>
+
+                            <!-- Labels below the track -->
+                            <div class="spectrum-label tangled below" data-threshold="tangled">Tangled</div>
+                            <div class="spectrum-label untangling below" data-threshold="untangling">Untangling</div>
+                            <div class="spectrum-label balance below" data-threshold="balance">Balance</div>
+                            <div class="spectrum-label leveling below" data-threshold="leveling">Leveling Up</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="section-with-step">
+            <div class="inline-step-indicator step-3">
+                Step C
+                <div class="step-tooltip">
+                    <div class="step-tooltip-title">Explore the Details</div>
+                    <div class="step-tooltip-desc">Content changes based on your persona + threshold combination. General shows common experiences. Specific personas reveal the Situation, Narrative Dynamics, and Shift for that journey stage.</div>
+                </div>
+            </div>
+            <div class="section-content">
+                <!-- Single Threshold Display (Desktop) -->
+                <div class="single-threshold-display" id="single-threshold-display">
+                    <!-- Will be generated by JavaScript -->
+                </div>
+                <!-- Accordion Panels (Mobile fallback) -->
+                <div class="accordion-container desktop-single-mode" id="accordion-container">
+                    <!-- Panels will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Footer -->
+        <div class="explorer-cta">
+            <p class="cta-text">See yourself somewhere on this journey?</p>
+            <a href="https://www.untanglednarrative.com/#contact" class="cta-button">Let's Talk</a>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // DATA
+        // ========================================
+        const thresholds = ['tangled', 'hopeful', 'untangling', 'agency', 'balance', 'skillsets', 'leveling'];
+
+ const thresholdMeta = {
+  tangled: { title: "Tangled", short: "Stuck and overwhelmed" },
+  hopeful: { title: "Hopeful & Curious", short: "Seeing possibilities" },
+  untangling: { title: "Actively Untangling", short: "Experimenting with change" },
+  agency: { title: "Building Agency", short: "Taking consistent action" },
+  balance: { title: "Finding Balance", short: "Aligning with values" },
+  skillsets: { title: "Building Skill-sets", short: "Compounding capabilities" },
+  leveling: { title: "Leveling Up", short: "Leading transformation" }
+};
+
+const generalData = {
+  tangled: {
+    subtitle: "Things feel stuck, heavy, and harder than they should be.",
+    experiences: [
+      {
+        emoji: "🔄",
+        title: "Stalled momentum",
+        desc: "Effort goes in, but progress feels circular. You stay busy and responsive, yet it is hard to point to what has actually moved. Activity provides short-term relief, but momentum never quite builds."
+      },
+      {
+        emoji: "🌀",
+        title: "Narrowed options",
+        desc: "Your thinking loops through the same few paths. Even when you want something different, the alternatives feel unrealistic or risky, so familiar choices keep reappearing."
+      },
+      {
+        emoji: "🧩",
+        title: "Recognized patterns",
+        desc: "You can see what keeps happening. The same situations repeat, and even with awareness, the pattern continues to shape your responses."
+      },
+      {
+        emoji: "⏳",
+        title: "Compressed time",
+        desc: "Everything feels urgent at once. Short-term demands crowd out longer-term thinking, making it harder to choose where to place your attention."
+      }
+    ]
+  },
+
+  hopeful: {
+    subtitle: "Change starts to feel possible, even if you do not know the path yet.",
+    experiences: [
+      {
+        emoji: "🔍",
+        title: "Small signs of movement",
+        desc: "Change starts to feel possible. You notice moments where effort leads to visible results, even if progress still feels uneven."
+      },
+      {
+        emoji: "🌱",
+        title: "Loosening perspectives",
+        desc: "Your thinking widens slightly. You can consider more than one option without immediately dismissing alternatives."
+      },
+      {
+        emoji: "🧠",
+        title: "Emerging insight",
+        desc: "Patterns begin to make more sense. Instead of just noticing repetition, you start to see how your responses play a role."
+      },
+      {
+        emoji: "🧭",
+        title: "Room to pause",
+        desc: "Urgency loosens its grip. There are brief moments where you can slow down enough to choose, rather than react."
+      }
+    ]
+  },
+
+  untangling: {
+    subtitle: "You begin moving on purpose, learning by testing and adjusting.",
+    experiences: [
+      {
+        emoji: "🧪",
+        title: "Active experimentation",
+        desc: "You start trying things instead of only thinking about them. Some moves help, others do not, but the system is no longer frozen."
+      },
+      {
+        emoji: "📝",
+        title: "Feedback becomes visible",
+        desc: "Results show up faster. You notice emotional responses, resistance, and small wins as usable information rather than noise."
+      },
+      {
+        emoji: "🔁",
+        title: "Interrupted patterns",
+        desc: "You catch yourself mid-loop more often. Old responses still appear, but they no longer run unchecked."
+      },
+      {
+        emoji: "📌",
+        title: "Growing clarity",
+        desc: "The mechanics of the tangle become clearer. You can name what is happening while it is happening, not only in hindsight."
+      }
+    ]
+  },
+
+  agency: {
+    subtitle: "You can take consistent action, even when discomfort shows up.",
+    experiences: [
+      {
+        emoji: "🏃",
+        title: "Reliable traction",
+        desc: "Effort translates into progress more consistently. You move forward even when motivation fluctuates."
+      },
+      {
+        emoji: "🎯",
+        title: "Decisions that stick",
+        desc: "Choices hold over time. Less energy goes into revisiting or undoing what has already been decided."
+      },
+      {
+        emoji: "🧰",
+        title: "Follow-through",
+        desc: "You finish more of what you start. Momentum carries across days rather than resetting overnight."
+      },
+      {
+        emoji: "🧠",
+        title: "Intentional response",
+        desc: "You respond with more choice and less reflex. Situations feel workable rather than overwhelming."
+      }
+    ]
+  },
+
+  balance: {
+    subtitle: "Your pace becomes sustainable, and your choices reflect what matters most.",
+    experiences: [
+      {
+        emoji: "⚖️",
+        title: "Calibrated effort",
+        desc: "You apply energy where it matters most. Fewer actions feel wasted or misdirected."
+      },
+      {
+        emoji: "🛡️",
+        title: "Clearer boundaries",
+        desc: "Time and attention are protected more deliberately. Tradeoffs feel conscious rather than forced."
+      },
+      {
+        emoji: "🌿",
+        title: "Sustainable pace",
+        desc: "You can maintain progress without constant strain. Recovery and effort begin to support each other."
+      },
+      {
+        emoji: "🧩",
+        title: "Internal coherence",
+        desc: "Your inner story and outward actions align more often, reducing friction and second-guessing."
+      }
+    ]
+  },
+
+  skillsets: {
+    subtitle: "You build capabilities that compound and reduce friction over time.",
+    experiences: [
+      {
+        emoji: "📈",
+        title: "Compounding capability",
+        desc: "Repetition pays off. Skills begin to stack, making future effort lighter and more effective."
+      },
+      {
+        emoji: "🧠",
+        title: "Cleaner execution",
+        desc: "You handle complexity with less friction. Fewer steps feel improvised or fragile."
+      },
+      {
+        emoji: "🤝",
+        title: "Transferable strength",
+        desc: "What you learn in one area starts helping in others. Skills show up across contexts."
+      },
+      {
+        emoji: "🧱",
+        title: "Built systems",
+        desc: "Structures support consistency. Progress relies less on willpower and more on design."
+      }
+    ]
+  },
+
+  leveling: {
+    subtitle: "You move with direction, influence, and durable impact.",
+    experiences: [
+      {
+        emoji: "🚀",
+        title: "Directional force",
+        desc: "You move with purpose rather than momentum alone. Actions point toward longer horizons."
+      },
+      {
+        emoji: "🧭",
+        title: "Expanded influence",
+        desc: "Your growth affects others. Decisions create ripple effects beyond your immediate scope."
+      },
+      {
+        emoji: "🏗️",
+        title: "Strategic vision",
+        desc: "You shape direction, not just outcomes. Short-term moves serve larger aims."
+      },
+      {
+        emoji: "🌍",
+        title: "Durable impact",
+        desc: "What you build continues to work over time. Effort creates lasting value rather than temporary relief."
+      }
+    ]
+  }
+};
+const personaData = {
+  executive: {
+    tangled: {
+      situation: "You carry significant responsibility and are often the one people turn to when things get messy. Decisions, follow-ups, and edge cases accumulate faster than they resolve, and the system quietly depends on you to absorb what does not fit anywhere else. Your calendar fills, but the work rarely settles.",
+      narrative:
+        "<em>“If I don’t stay close, this will slip.”</em><br>" +
+        "<em>Or maybe, “It’s faster if I just handle it myself.”</em><br>" +
+        "<em>Or maybe, “This is what they need me for.”</em><br><br>" +
+        "Early on, staying involved worked. Problems stayed small, quality stayed high, and your presence kept outcomes steady. Over time, that role hardened into expectation. When you step in, things stabilize. When you step back, gaps appear. Staying close starts to feel like responsibility rather than choice, even as your attention narrows and your days fragment.",
+      shift: "There is room to see where leadership creates clarity and where constant presence has been compensating for systems that never had to grow."
+    },
+    hopeful: {
+      situation: "You start noticing where your involvement prevents real ownership. Some issues resolve cleanly without you, and you can feel the difference in your day when that happens.",
+      narrative:
+        "<em>“Maybe I don’t have to be the hinge for everything.”</em><br>" +
+        "<em>Or maybe, “If I clarify the decision, I don’t need to carry it.”</em><br>" +
+        "<em>Or maybe, “The team can stretch if the work makes them stretch.”</em><br><br>" +
+        "You begin to see that control and reliability have been welded together. The pressure still exists, but your mind starts making space for a different mechanism.",
+      shift: "You can separate what truly requires your judgment from what has been routed to you by habit."
+    },
+    untangling: {
+      situation: "You begin making small structural moves. Meetings get sharper. Decision lanes get clearer. You test what happens when you stop rescuing every wobble.",
+      narrative:
+        "<em>“Let me see what breaks if I don’t catch it.”</em><br>" +
+        "<em>Or maybe, “I can make the expectations clear and then step back.”</em><br>" +
+        "<em>Or maybe, “If they own it, they learn it.”</em><br><br>" +
+        "Some experiments feel uncomfortable. A few fail in visible ways. That feedback becomes useful. You start building a leadership rhythm that relies on clarity, not constant presence.",
+      shift: "You gain evidence about what needs your attention and what simply needs a better container."
+    },
+    agency: {
+      situation: "You can move through your week with fewer emotional pivots. You make decisions once, communicate them clearly, and see follow-through without hovering.",
+      narrative:
+        "<em>“My job is direction and standards.”</em><br>" +
+        "<em>Or maybe, “Consistency beats scrambling.”</em><br>" +
+        "<em>Or maybe, “If it matters, it gets a system.”</em><br><br>" +
+        "You still care deeply about outcomes, but the care expresses itself through structure and alignment. Your attention becomes more stable.",
+      shift: "You can choose involvement on purpose instead of being pulled into it."
+    },
+    balance: {
+      situation: "Your leadership pace becomes sustainable. You protect focus, you recover intentionally, and your calendar reflects what matters rather than what panics.",
+      narrative:
+        "<em>“Urgency is a signal, not a lifestyle.”</em><br>" +
+        "<em>Or maybe, “I can hold standards without holding every detail.”</em><br>" +
+        "<em>Or maybe, “My presence is valuable when it is deliberate.”</em><br><br>" +
+        "Tradeoffs feel clearer. You can say yes and no with less internal negotiation. Your role feels more coherent.",
+      shift: "You can hold responsibility without letting it consume all available space."
+    },
+    skillsets: {
+      situation: "You build repeatable leadership tools. Decision frameworks, accountability rhythms, escalation paths, and clearer communication patterns reduce friction across the system.",
+      narrative:
+        "<em>“When I build the pattern once, it pays me back.”</em><br>" +
+        "<em>Or maybe, “I can teach the thinking, not just solve the problem.”</em><br>" +
+        "<em>Or maybe, “Strong systems protect strong people.”</em><br><br>" +
+        "Your capability compounds. You are less reactive because the environment around you is better designed.",
+      shift: "You create stability through skill and structure, not strain."
+    },
+    leveling: {
+      situation: "Your impact reaches beyond immediate execution. You shape culture, build leaders, and influence direction across a wider scope.",
+      narrative:
+        "<em>“My work is to build conditions where excellence keeps happening.”</em><br>" +
+        "<em>Or maybe, “The goal is alignment at scale.”</em><br>" +
+        "<em>Or maybe, “I want the system to work when I’m not in the room.”</em><br><br>" +
+        "Your leadership becomes less about saving the day and more about shaping the years.",
+      shift: "You move from being the backstop to being the builder of durable capability."
+    }
+  },
+
+  creative: {
+    tangled: {
+      situation: "Your work depends on originality and focus, but starting often feels heavier than expected. Momentum arrives in bursts, then collapses. You lose time to circling, tweaking, and second-guessing.",
+      narrative:
+        "<em>“If I start too soon, I’ll ruin it.”</em><br>" +
+        "<em>Or maybe, “If it isn’t great, it isn’t worth doing.”</em><br>" +
+        "<em>Or maybe, “I’ll feel ready when the idea feels clear.”</em><br><br>" +
+        "At times, waiting feels like protecting the work. At times, it feels like protecting you from what the work might reveal. Either way, the start line becomes a negotiation, and output becomes inconsistent.",
+      shift: "There is room to notice which parts of your process drain energy and which ones quietly restore it."
+    },
+    hopeful: {
+      situation: "You feel drawn back toward your work without forcing it. You have brief moments where starting feels possible, even if consistency still wobbles.",
+      narrative:
+        "<em>“Maybe I can begin without knowing the ending.”</em><br>" +
+        "<em>Or maybe, “A rough version can carry me forward.”</em><br>" +
+        "<em>Or maybe, “The work gets clearer after I touch it.”</em><br><br>" +
+        "Curiosity shows up again. You start paying attention to what invites momentum instead of waiting for a perfect mood.",
+      shift: "You can separate creative readiness from creative permission."
+    },
+    untangling: {
+      situation: "You test a few creation rhythms. You adjust inputs, constraints, time blocks, and feedback loops. You try starting smaller and finishing more often.",
+      narrative:
+        "<em>“Let me learn what actually helps me start.”</em><br>" +
+        "<em>Or maybe, “I can treat consistency as an experiment.”</em><br>" +
+        "<em>Or maybe, “I don’t have to love the first draft.”</em><br><br>" +
+        "Some sessions feel flat. Others surprise you. You begin trusting a process that produces output even when inspiration fluctuates.",
+      shift: "You gain usable evidence about how your creativity behaves, instead of guessing."
+    },
+    agency: {
+      situation: "You can create when conditions are imperfect. You restart after interruption with less drama. Output becomes more reliable.",
+      narrative:
+        "<em>“I can show up and build the spark.”</em><br>" +
+        "<em>Or maybe, “The work comes from reps.”</em><br>" +
+        "<em>Or maybe, “Finishing is part of the craft.”</em><br><br>" +
+        "Your relationship with the work steadies. You spend less time bargaining with yourself.",
+      shift: "You can choose creation more consistently, even when motivation varies."
+    },
+    balance: {
+      situation: "You protect the conditions that support your work. You pace yourself. You recover on purpose, and your creative life stops running on panic.",
+      narrative:
+        "<em>“Sustainable beats intense.”</em><br>" +
+        "<em>Or maybe, “Rest keeps my taste sharp.”</em><br>" +
+        "<em>Or maybe, “I can care without burning.”</em><br><br>" +
+        "You build a rhythm that lasts. Creativity feels less like a gamble.",
+      shift: "You can hold ambition and steadiness in the same week."
+    },
+    skillsets: {
+      situation: "Your capabilities compound. You generate ideas faster, develop them with less friction, and communicate them more clearly across contexts.",
+      narrative:
+        "<em>“I can build a toolkit, not just a moment.”</em><br>" +
+        "<em>Or maybe, “Constraints can make me stronger.”</em><br>" +
+        "<em>Or maybe, “I can translate my work for different rooms.”</em><br><br>" +
+        "Execution improves. The work travels farther because you can shape it with more control.",
+      shift: "You rely more on skill and structure, less on chance."
+    },
+    leveling: {
+      situation: "Your work creates ripple effects. You lead projects, shape communities, and become someone others trust to deliver.",
+      narrative:
+        "<em>“I can build worlds, not just outputs.”</em><br>" +
+        "<em>Or maybe, “My work can hold other people’s momentum too.”</em><br>" +
+        "<em>Or maybe, “I can aim bigger without losing myself.”</em><br><br>" +
+        "You move from private struggle to public force. The work has direction and weight.",
+      shift: "You create at a scale that matches your vision, with a process that can support it."
+    }
+  },
+
+  entrepreneur: {
+    tangled: {
+      situation: "You carry the business in your head. Decisions stack up, priorities compete, and progress feels chaotic. You are doing a lot, but the effort does not reliably convert into traction.",
+      narrative:
+        "<em>“If I slow down, I lose momentum.”</em><br>" +
+        "<em>Or maybe, “If I pick wrong, I waste months.”</em><br>" +
+        "<em>Or maybe, “I should be able to figure this out alone.”</em><br><br>" +
+        "Staying busy can feel like staying safe. It keeps the business moving, but it also keeps you from seeing what matters most. The week fills, and clarity keeps getting postponed.",
+      shift: "There is room to separate motion from traction, and options from priorities."
+    },
+    hopeful: {
+      situation: "You start believing the business can become simpler and steadier. You feel drawn toward focus, even if it still feels risky.",
+      narrative:
+        "<em>“Maybe fewer moves can produce more results.”</em><br>" +
+        "<em>Or maybe, “I can choose a direction and stay with it long enough to learn.”</em><br>" +
+        "<em>Or maybe, “Clarity might be built, not found.”</em><br><br>" +
+        "You begin to notice the cost of constant switching. You get curious about what would happen if you picked one lane.",
+      shift: "You can see where your effort is scattered and where it already wants to converge."
+    },
+    untangling: {
+      situation: "You test messaging, offers, routines, and boundaries. You run smaller experiments instead of reinventing the whole business every week.",
+      narrative:
+        "<em>“Let me prove what works instead of guessing.”</em><br>" +
+        "<em>Or maybe, “I can build a weekly rhythm that holds me.”</em><br>" +
+        "<em>Or maybe, “I can stop treating every idea like an emergency.”</em><br><br>" +
+        "Some experiments flop. Others create clear signals. You start building around evidence rather than urgency.",
+      shift: "You gain feedback that reduces thrash and increases confidence."
+    },
+    agency: {
+      situation: "You execute consistently. You follow through on fewer priorities, and results become easier to interpret.",
+      narrative:
+        "<em>“Consistency is my advantage.”</em><br>" +
+        "<em>Or maybe, “I can finish a cycle before starting another.”</em><br>" +
+        "<em>Or maybe, “My business deserves structure.”</em><br><br>" +
+        "Your week becomes steadier. Decisions stick longer. You spend less energy recalibrating.",
+      shift: "You can turn attention into output without draining yourself as quickly."
+    },
+    balance: {
+      situation: "Business and life stop competing as aggressively. You protect energy, relationships, and recovery, and you can still make progress.",
+      narrative:
+        "<em>“Sustainability is a strategy.”</em><br>" +
+        "<em>Or maybe, “Boundaries protect my best work.”</em><br>" +
+        "<em>Or maybe, “I can grow without burning.”</em><br><br>" +
+        "You make tradeoffs with clearer eyes. The business feels more livable.",
+      shift: "You can scale your effort without scaling your stress at the same rate."
+    },
+    skillsets: {
+      situation: "Your skills compound across sales, communication, delivery, and leadership. You spot problems earlier and correct with less panic.",
+      narrative:
+        "<em>“I can build capability that travels with me.”</em><br>" +
+        "<em>Or maybe, “I can communicate value clearly and repeatably.”</em><br>" +
+        "<em>Or maybe, “I can design the business to support the person running it.”</em><br><br>" +
+        "You become more adaptable because you trust your tools. Progress feels more predictable.",
+      shift: "You gain strength that holds under pressure, across different seasons."
+    },
+    leveling: {
+      situation: "You step into a bigger role. Your work scales through systems, team, partnerships, or licensing. The business begins to outgrow the version of you that was built for survival.",
+      narrative:
+        "<em>“I can build something that works without me doing everything.”</em><br>" +
+        "<em>Or maybe, “My job is direction and design now.”</em><br>" +
+        "<em>Or maybe, “I can turn what I know into something others can use.”</em><br><br>" +
+        "You shift from pushing the business forward to shaping what it becomes.",
+      shift: "You create growth that is durable, not volatile."
+    }
+  },
+
+  team: {
+    tangled: {
+      situation: "The team feels stuck. Communication is messy. Projects stall, ownership blurs, and tension shows up sideways. People are working, but alignment keeps slipping.",
+      narrative:
+        "<em>“We keep talking, but nothing changes.”</em><br>" +
+        "<em>Or maybe, “If we push harder, it will work eventually.”</em><br>" +
+        "<em>Or maybe, “It’s safer to avoid the real conversation.”</em><br><br>" +
+        "The team develops coping patterns. Workarounds replace agreements. Resentment builds quietly. Outcomes become inconsistent, and trust erodes in small moments.",
+      shift: "There is room to see where the breakdown is happening and what the team keeps stepping around."
+    },
+    hopeful: {
+      situation: "Small moments of honesty appear. Someone names a tension. A meeting ends with a clearer decision. You can feel what alignment might look like again.",
+      narrative:
+        "<em>“Maybe we can fix how we work, not just what we do.”</em><br>" +
+        "<em>Or maybe, “If we name it, we can handle it.”</em><br>" +
+        "<em>Or maybe, “We can be direct and still be respectful.”</em><br><br>" +
+        "The team starts noticing patterns instead of blaming people. Curiosity returns in small doses.",
+      shift: "You can begin separating personality friction from structural confusion."
+    },
+    untangling: {
+      situation: "The team experiments with clearer practices. Decision rules, ownership agreements, meeting structure, and communication norms get tested and adjusted.",
+      narrative:
+        "<em>“Let’s try a different way and see what happens.”</em><br>" +
+        "<em>Or maybe, “We can make expectations visible.”</em><br>" +
+        "<em>Or maybe, “Repair can be part of the process.”</em><br><br>" +
+        "Some attempts feel awkward. Some help immediately. The team begins learning what creates traction for this group, in this context.",
+      shift: "You gain feedback that turns conflict into information instead of fallout."
+    },
+    agency: {
+      situation: "The team can move work forward reliably. Decisions get made, responsibilities stay clear, and issues surface earlier rather than later.",
+      narrative:
+        "<em>“We know how we operate now.”</em><br>" +
+        "<em>Or maybe, “We can address problems before they spread.”</em><br>" +
+        "<em>Or maybe, “We can move fast without getting sloppy.”</em><br><br>" +
+        "Trust becomes practical. The team spends less time decoding each other and more time executing.",
+      shift: "Momentum becomes a shared property, not something one person forces."
+    },
+    balance: {
+      situation: "The team operates at a sustainable pace. Workload distribution becomes more intentional, and recovery stops being accidental.",
+      narrative:
+        "<em>“We can protect focus and still deliver.”</em><br>" +
+        "<em>Or maybe, “Boundaries make us better.”</em><br>" +
+        "<em>Or maybe, “We can align and still have lives.”</em><br><br>" +
+        "Values guide decisions more consistently. Culture matches what the team claims to care about.",
+      shift: "You can hold performance and sustainability in the same system."
+    },
+    skillsets: {
+      situation: "Team capability compounds. Members develop shared language, cleaner collaboration, and stronger problem-solving. New challenges feel more workable because the team has repeatable tools.",
+      narrative:
+        "<em>“We can handle complexity together.”</em><br>" +
+        "<em>Or maybe, “We can teach this way of working.”</em><br>" +
+        "<em>Or maybe, “Our process is part of our advantage.”</em><br><br>" +
+        "Execution improves across contexts. Friction decreases because the team knows how to repair and adapt.",
+      shift: "You build strength that carries forward, even when conditions change."
+    },
+    leveling: {
+      situation: "The team’s impact spreads beyond its direct work. Other teams learn from your practices. You influence culture, standards, and how work gets done across the organization.",
+      narrative:
+        "<em>“We can raise the bar for how people collaborate.”</em><br>" +
+        "<em>Or maybe, “Our job is to build capability, not just deliver tasks.”</em><br>" +
+        "<em>Or maybe, “We can make good work easier for others.”</em><br><br>" +
+        "The team moves from performing well to multiplying performance.",
+      shift: "You create durable impact that outlasts specific projects and personalities."
+    }
+  }
+};
+
+
+
+        // ========================================
+        // STATE
+        // ========================================
+        let currentPersona = 'general';
+        let currentThreshold = 'tangled'; // Currently selected threshold
+        let openPanels = new Set(['tangled']); // Start with first panel open
+
+        // ========================================
+        // RENDER FUNCTIONS
+        // ========================================
+        function renderAccordions() {
+            const container = document.getElementById('accordion-container');
+            container.innerHTML = '';
+
+            thresholds.forEach(threshold => {
+                const isOpen = openPanels.has(threshold);
+                const meta = thresholdMeta[threshold];
+
+                const panel = document.createElement('div');
+                panel.className = `accordion-panel ${threshold} ${isOpen ? 'open' : ''}`;
+                panel.dataset.threshold = threshold;
+
+                let bodyContent = '';
+
+                if (currentPersona === 'general') {
+                    // General view: show experiences
+                    const data = generalData[threshold];
+                    bodyContent = `
+                        <div class="accordion-content">
+                            <p class="general-experiences-title">When you're in this threshold, you might experience:</p>
+                            <div class="experience-cards">
+                                ${data.experiences.map(exp => `
+                                    <div class="experience-card">
+                                        <div class="experience-emoji">${exp.emoji}</div>
+                                        <div class="experience-title">${exp.title}</div>
+                                        <div class="experience-desc">${exp.desc}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Persona view: show situation/narrative/shift
+                    const data = personaData[currentPersona]?.[threshold];
+                    if (data) {
+                        bodyContent = `
+                            <div class="accordion-content">
+                                <div class="threshold-sections">
+                                    <div class="threshold-section">
+                                        <div class="section-title">The Situation</div>
+                                        <div class="section-text">${data.situation}</div>
+                                    </div>
+                                    <div class="threshold-section">
+                                        <div class="section-title">Narrative Dynamics</div>
+                                        <div class="section-text">${data.narrative}</div>
+                                    </div>
+                                    <div class="threshold-section">
+                                        <div class="section-title">The Shift Forward</div>
+                                        <div class="section-text">${data.shift}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                panel.innerHTML = `
+                    <div class="accordion-header">
+                        <div class="accordion-header-left">
+                            <div class="threshold-dot ${threshold}"></div>
+                            <span class="accordion-title">${meta.title}</span>
+                            <span class="accordion-subtitle">${meta.short}</span>
+                        </div>
+                        <span class="accordion-toggle">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        ${bodyContent}
+                    </div>
+                `;
+
+                container.appendChild(panel);
+            });
+
+            // Add click handlers
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const panel = header.closest('.accordion-panel');
+                    const threshold = panel.dataset.threshold;
+                    togglePanel(threshold);
+                });
+            });
+        }
+
+        function renderSingleThreshold() {
+            const container = document.getElementById('single-threshold-display');
+            const threshold = currentThreshold;
+            const meta = thresholdMeta[threshold];
+
+            let bodyContent = '';
+
+            if (currentPersona === 'general') {
+                // General view: show experiences
+                const data = generalData[threshold];
+                bodyContent = `
+                    <p class="general-experiences-title">When you're in this threshold, you might experience:</p>
+                    <div class="experience-cards">
+                        ${data.experiences.map(exp => `
+                            <div class="experience-card">
+                                <div class="experience-emoji">${exp.emoji}</div>
+                                <div class="experience-title">${exp.title}</div>
+                                <div class="experience-desc">${exp.desc}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Persona view: show situation/narrative/shift
+                const data = personaData[currentPersona]?.[threshold];
+                if (data) {
+                    bodyContent = `
+                        <div class="threshold-sections">
+                            <div class="threshold-section">
+                                <div class="section-title">The Situation</div>
+                                <div class="section-text">${data.situation}</div>
+                            </div>
+                            <div class="threshold-section">
+                                <div class="section-title">Narrative Dynamics</div>
+                                <div class="section-text">${data.narrative}</div>
+                            </div>
+                            <div class="threshold-section">
+                                <div class="section-title">The Shift Forward</div>
+                                <div class="section-text">${data.shift}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = `
+                <div class="single-threshold-header">
+                    <div class="single-threshold-dot ${threshold}"></div>
+                    <span class="single-threshold-title">${meta.title}</span>
+                    <span class="single-threshold-subtitle">${meta.short}</span>
+                </div>
+                ${bodyContent}
+            `;
+        }
+
+        function togglePanel(threshold) {
+            const wasOpen = openPanels.has(threshold);
+
+            // Close all panels first
+            openPanels.forEach(t => {
+                const panel = document.querySelector(`.accordion-panel[data-threshold="${t}"]`);
+                if (panel) panel.classList.remove('open');
+            });
+            openPanels.clear();
+
+            // If clicking a different panel (or it was closed), open it
+            if (!wasOpen) {
+                currentThreshold = threshold;
+                openPanels.add(threshold);
+                const panel = document.querySelector(`.accordion-panel[data-threshold="${threshold}"]`);
+                if (panel) {
+                    panel.classList.add('open');
+                    // Scroll into view
+                    setTimeout(() => {
+                        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+                // Keep single threshold display in sync
+                renderSingleThreshold();
+            }
+
+            updateSpectrumLabels();
+        }
+
+        function openSinglePanel(threshold) {
+            currentThreshold = threshold;
+            openPanels.clear();
+            openPanels.add(threshold);
+            renderAccordions();
+            renderSingleThreshold();
+            updateSpectrumLabels();
+
+            // Scroll the panel into view (for mobile accordion)
+            setTimeout(() => {
+                const panel = document.querySelector(`.accordion-panel[data-threshold="${threshold}"]`);
+                if (panel) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        function updateSpectrumLabels() {
+            const singlePanelOpen = openPanels.size === 1;
+
+            // Update labels
+            document.querySelectorAll('.spectrum-label').forEach(label => {
+                const threshold = label.dataset.threshold;
+                label.classList.toggle('active', openPanels.has(threshold) && singlePanelOpen);
+            });
+
+            // Update markers (circles)
+            document.querySelectorAll('.spectrum-marker').forEach(marker => {
+                const threshold = marker.dataset.threshold;
+                marker.classList.toggle('active', openPanels.has(threshold) && singlePanelOpen);
+            });
+        }
+
+        function setPersona(persona) {
+            currentPersona = persona;
+
+            // Update pill styles
+            document.querySelectorAll('.persona-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.persona === persona);
+            });
+
+            // Re-render both views
+            renderAccordions();
+            renderSingleThreshold();
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Onboarding overlay
+            const onboarding = document.getElementById('onboarding');
+            const startBtn = document.getElementById('onboarding-start');
+            const skipBtn = document.getElementById('onboarding-skip');
+
+            // Check if user has dismissed before
+            if (localStorage.getItem('explorerOnboardingDismissed')) {
+                onboarding.classList.add('hidden');
+            }
+
+            function dismissOnboarding(remember = false) {
+                onboarding.classList.add('hidden');
+                if (remember) {
+                    localStorage.setItem('explorerOnboardingDismissed', 'true');
+                }
+            }
+
+            startBtn.addEventListener('click', () => dismissOnboarding(false));
+            skipBtn.addEventListener('click', () => dismissOnboarding(true));
+
+            // Initial render
+            renderAccordions();
+            renderSingleThreshold();
+
+            // Persona filter clicks
+            document.querySelectorAll('.persona-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    setPersona(pill.dataset.persona);
+                });
+            });
+
+            // Spectrum label clicks
+            document.querySelectorAll('.spectrum-label').forEach(label => {
+                label.addEventListener('click', () => {
+                    openSinglePanel(label.dataset.threshold);
+                });
+            });
+
+            // Spectrum marker (circle) clicks
+            document.querySelectorAll('.spectrum-marker').forEach(marker => {
+                marker.addEventListener('click', () => {
+                    openSinglePanel(marker.dataset.threshold);
+                });
+            });
+
+            // Initialize spectrum state
+            updateSpectrumLabels();
+        });
+    </script>
+</body>
+</html>
